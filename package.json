@@ -13,5 +13,9 @@
     "ffi": "*",
     "ref": "*",
     "ref-array": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
   }
 }
