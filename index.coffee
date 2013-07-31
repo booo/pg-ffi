@@ -3,24 +3,64 @@ ref = require "ref"
 refArray = require "ref-array"
 
 functions =
+  PQconncetStart: ["pointer", ["string"]]
+  PQconnectStartParams: ["pointer", [
+    refArray("string"),
+    refArray("string"),
+    "int"
+    ]
+  ]
+  PQconnectPoll: ["int", ["pointer"]]
   PQconnectdb: ["pointer", ["string"]]
+  PQconnectdbParams: ["pointer", [
+    refArray("string"),
+    refArray("string"),
+    "int"
+    ]
+  ]
+  PQsetdbLogin: ["pointer", ["string", "string", "string", "string", "string",
+    "string", "string"]]
+  PQsetdb: ["pointer", ["string", "string", "string", "string", "string"]]
+  PQfinish: ["void", ["pointer"]]
+  PQconndefaults: ["pointer", []]
+  PQconninfoParse: ["pointer", ["string", refArray("string")]] # TODO check char **errmsg type
+  PQconninfoFree: ["void", ["pointer"]]
+  PQresetStart: ["int", ["pointer"]]
+  PQresetPoll: ["int", ["pointer"]]
+  PQreset: ["void", ["pointer"]]
+  PQgetCancel: ["pointer", ["pointer"]]
+  PQfreeCancel: ["void", ["pointer"]]
+  PQcancel: ["int", ["pointer", "string", "int"]] # TODOcheck char *errbuf tpye
+  PQrequestCancel: ["int", ["pointer"]]
+  PQdb: ["string", ["pointer"]]
+  PQuser: ["string", ["pointer"]]
+  PQpass: ["string", ["pointer"]]
+  PQhost: ["string", ["pointer"]]
+  PQport: ["string", ["pointer"]]
+  PQtty: ["string", ["pointer"]]
+  PQoptions: ["string", ["pointer"]]
   PQstatus: ["int", ["pointer"]]
   PQtransactionStatus: ["int", ["pointer"]]
   PQparameterStatus: ["string", ["pointer", "string"]]
-  PQfinish: ["void", ["pointer"]]
-  PQreset: ["void", ["pointer"]]
-  PQping: ["pointer", ["string"]]
-  PQdb: ["string", ["pointer"]]
+  PQprotocolVersion: ["int", ["pointer"]]
+  PQserverVersion: ["int", ["pointer"]]
   PQerrorMessage: ["string", ["pointer"]]
+  PQsocket: ["int", ["pointer"]]
+  PQbackendPID: ["int", ["pointer"]]
+  PQconnectionNeedsPassword: ["int", ["pointer"]]
+  PQconnectionUsedPassword: ["int", ["pointer"]]
+  PQclientEncoding: ["int", ["pointer"]]
+  PQsetClientEncoding: ["int", ["pointer", "string"]]
+  PQgetssl: ["void", ["pointer"]]
+  PQinitSSL: ["void", ["int"]]
+  PQinitOpenSSL: ["void", ["int", "int"]]
+  PQsetErrorVerbosity: ["int", ["pointer", "int"]]
+  PQtrace: ["void", ["pointer", "int"]] #TODO check type of FILE *debug_port
+  PQuntrace: ["void", ["pointer"]]
+  #TODO PQnoticeReceiver
+  #TODO PQnoticeProcessor
+  #TODO PQregisterThreadLock
   PQexec: ["pointer", ["pointer", "string"]]
-  PQresultStatus: ["pointer", ["pointer"]]
-  PQresStatus: ["string", ["pointer"]]
-  PQclear: ["void", ["pointer"]]
-  PQntuples: ["int", ["pointer"]]
-  PQnfields: ["int", ["pointer"]]
-  PQfname: ["string", ["pointer", "int"]]
-  PQfnumber: ["int", ["pointer", "string"]]
-  PQgetvalue: ["string", ["pointer", "int", "int"]]
   PQexecParams: ["pointer", [
     "pointer", # PGconn *conn
     "string", # const char *command,
@@ -29,11 +69,25 @@ functions =
     refArray("string"), # char * const *paramValues
     refArray("int"), # const int * paramLengths
     refArray("int"), #const int *papramFormats
-    "int", # int resultFormat
+    "int" # int resultFormat
     ]
   ]
-  PQprotocolVersion: ["int", ["pointer"]]
-  PQserverVersion: ["int", ["pointer"]]
+  PQprepare: ["pointer", ["string", "string", "int", refArray("int")]]
+  PQexecPrepared: ["pointer", [
+    "pointer", "string", "int",
+    refArray("string"), refArray("int"), refArray("int"), "int"
+    ]
+  ]
+  PQsendQuery: ["int", ["string"]]
+  PQping: ["pointer", ["string"]]
+  PQresultStatus: ["pointer", ["pointer"]]
+  PQresStatus: ["string", ["pointer"]]
+  PQclear: ["void", ["pointer"]]
+  PQntuples: ["int", ["pointer"]]
+  PQnfields: ["int", ["pointer"]]
+  PQfname: ["string", ["pointer", "int"]]
+  PQfnumber: ["int", ["pointer", "string"]]
+  PQgetvalue: ["string", ["pointer", "int", "int"]]
   PQlibVersion: ["int", []]
 
 pq = ffi.Library "libpq", functions
