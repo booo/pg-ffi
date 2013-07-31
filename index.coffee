@@ -33,43 +33,45 @@ functions =
 
 pq = ffi.Library "libpq", functions
 
-conn = pq.PQconnectdb "postgresql://postgres@localhost:5432/postgres"
-status = pq.PQstatus conn
-console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
-result = pq.PQexec conn, "SELECT NOW() as then;"
-console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
-console.log "Number of rows (tuples): #{ pq.PQntuples result }"
-console.log "Number of columns (fields): #{ pq.PQnfields result }"
-console.log "Columns: " + (pq.PQfname result, i for i in [0...(pq.PQnfields result)]).join ", "
-console.log "Number of column 'then' is " + pq.PQfnumber result, "then"
-for i in [0...(pq.PQntuples result)]
-  console.log (pq.PQgetvalue result, i, j for j in [0...(pq.PQnfields result)]).join ", "
-pq.PQclear result
+module.exports = pq
 
-result = pq.PQexec conn, "CREATE TEMP TABLE foo (name text, age int, birthday date)"
-console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
-pq.PQclear result
-
-pq.PQexecParams conn,
-  "INSERT INTO foo (name, age, birthday) VALUES ($1, $2, $3);",
-  3,
-  [],
-  ["foo", "42", new Date().toISOString()],
-  [],
-  [],
-  0
-
-console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
-console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
-pq.PQclear result
-
-result = pq.PQexec conn, "SELECT * FROM foo;"
-console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
-console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
-console.log "Number of rows (tuples): #{ pq.PQntuples result }"
-console.log "Number of columns (fields): #{ pq.PQnfields result }"
-console.log "Columns: " + (pq.PQfname result, i for i in [0...(pq.PQnfields result)]).join ", "
-for i in [0...(pq.PQntuples result)]
-  console.log (pq.PQgetvalue result, i, j for j in [0...(pq.PQnfields result)]).join ", "
-pq.PQclear result
-pq.PQfinish conn
+#conn = pq.PQconnectdb "postgresql://postgres@localhost:5432/postgres"
+#status = pq.PQstatus conn
+#console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
+#result = pq.PQexec conn, "SELECT NOW() as then;"
+#console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
+#console.log "Number of rows (tuples): #{ pq.PQntuples result }"
+#console.log "Number of columns (fields): #{ pq.PQnfields result }"
+#console.log "Columns: " + (pq.PQfname result, i for i in [0...(pq.PQnfields result)]).join ", "
+#console.log "Number of column 'then' is " + pq.PQfnumber result, "then"
+#for i in [0...(pq.PQntuples result)]
+#  console.log (pq.PQgetvalue result, i, j for j in [0...(pq.PQnfields result)]).join ", "
+#pq.PQclear result
+#
+#result = pq.PQexec conn, "CREATE TEMP TABLE foo (name text, age int, birthday date)"
+#console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
+#pq.PQclear result
+#
+#pq.PQexecParams conn,
+#  "INSERT INTO foo (name, age, birthday) VALUES ($1, $2, $3);",
+#  3,
+#  [],
+#  ["foo", "42", new Date().toISOString()],
+#  [],
+#  [],
+#  0
+#
+#console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
+#console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
+#pq.PQclear result
+#
+#result = pq.PQexec conn, "SELECT * FROM foo;"
+#console.log "PQerrorMessage: #{pq.PQerrorMessage conn}"
+#console.log "PQresultStatus: #{pq.PQresStatus pq.PQresultStatus result}"
+#console.log "Number of rows (tuples): #{ pq.PQntuples result }"
+#console.log "Number of columns (fields): #{ pq.PQnfields result }"
+#console.log "Columns: " + (pq.PQfname result, i for i in [0...(pq.PQnfields result)]).join ", "
+#for i in [0...(pq.PQntuples result)]
+#  console.log (pq.PQgetvalue result, i, j for j in [0...(pq.PQnfields result)]).join ", "
+#pq.PQclear result
+#pq.PQfinish conn
