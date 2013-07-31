@@ -8,11 +8,14 @@ describe "pg-ffi", ->
       conn = pq.PQconnectdb "postgres://postgres@localhost"
     it "should return a PQconnection pointer", ->
       conn = pq.PQconnectdb "postgres://postgres@localhost"
+      status = pq.PQstatus conn
+      status.should.equal pq.CONNECTION_OK
 
   describe "PQstatus", ->
     it "should return a status code when connection string is bad", ->
       conn = pq.PQconnectdb "this is foo bar"
       status = pq.PQstatus conn
+      status.should.equal pq.CONNECTION_BAD
 
   describe "PQerrorMessage", ->
     it "should return a proper error message on error", ->
