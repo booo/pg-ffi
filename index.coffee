@@ -4,7 +4,9 @@ refArray = require "ref-array"
 
 functions =
   PQconnectdb: ["pointer", ["string"]]
-  PQstatus: ["pointer", ["pointer"]]
+  PQstatus: ["int", ["pointer"]]
+  PQtransactionStatus: ["int", ["pointer"]]
+  PQparameterStatus: ["string", ["pointer", "string"]]
   PQfinish: ["void", ["pointer"]]
   PQreset: ["void", ["pointer"]]
   PQping: ["pointer", ["string"]]
@@ -30,10 +32,16 @@ functions =
     "int", # int resultFormat
     ]
   ]
+  PQprotocolVersion: ["int", ["pointer"]]
+  PQserverVersion: ["int", ["pointer"]]
+  PQlibVersion: ["int", []]
 
 pq = ffi.Library "libpq", functions
 
+(require "./enums")(pq)
+
 module.exports = pq
+
 
 #conn = pq.PQconnectdb "postgresql://postgres@localhost:5432/postgres"
 #status = pq.PQstatus conn
