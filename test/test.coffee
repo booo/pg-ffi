@@ -1,0 +1,43 @@
+should = require "should"
+
+describe "pg-ffi", ->
+  pq = require ".."
+
+  describe "PQconnectdb", ->
+    it "should connect to a database without error", ->
+      conn = pq.PQconnectdb "postgres://postgres@localhost"
+    it "should return a PQconnection pointer", ->
+      conn = pq.PQconnectdb "postgres://postgres@localhost"
+
+  describe "PQstatus", ->
+    it "should return a status code when connection string is bad", ->
+      conn = pq.PQconnectdb "this is foo bar"
+      status = pq.PQstatus conn
+
+  describe "PQerrorMessage", ->
+    it "should return a proper error message on error", ->
+      conn = pq.PQconnectdb "this is foo bar"
+      message = pq.PQerrorMessage conn
+      message.should.equal(
+        'missing "=" after "this" in connection info string\n'
+      )
+
+  describe "PQexec", ->
+    it "should execute a SQL statement", ->
+      conn = pq.PQconnectdb "postgres://postgres@localhost"
+      result = pq.PQexec conn, "SELECT NOW() as then;"
+      status = pq.PQresultStatus result
+      (pq.PQresStatus status).should.equal "PGRES_TUPLES_OK"
+
+  describe "PQntuples", ->
+    it "should return the number of tuples", ->
+  describe "PQnfields", ->
+    it "should return the number of columns (fields)", ->
+  describe "PQfname", ->
+    it "should return the name of a column", ->
+  describe "PQfnumber", ->
+    it "should return the index of a column", ->
+  describe "PQgetvalue", ->
+    it "should return the value of a index i, j", ->
+  describe "PQexecParams", ->
+    it "should exec a SQL and pass parameters separately from SQL", ->
