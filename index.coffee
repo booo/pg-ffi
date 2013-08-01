@@ -3,7 +3,7 @@ ref = require "ref"
 refArray = require "ref-array"
 
 functions =
-  PQconncetStart: ["pointer", ["string"]]
+  PQconnectStart: ["pointer", ["string"]]
   PQconnectStartParams: ["pointer", [
     refArray("string"),
     refArray("string"),
@@ -20,7 +20,7 @@ functions =
   ]
   PQsetdbLogin: ["pointer", ["string", "string", "string", "string", "string",
     "string", "string"]]
-  PQsetdb: ["pointer", ["string", "string", "string", "string", "string"]]
+  #PQsetdb: ["pointer", ["string", "string", "string", "string", "string"]]
   PQfinish: ["void", ["pointer"]]
   PQconndefaults: ["pointer", []]
   PQconninfoParse: ["pointer", ["string", refArray("string")]] # TODO check char **errmsg type
