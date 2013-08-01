@@ -1,13 +1,16 @@
 should = require "should"
 
 describe "pg-ffi", ->
+
   pq = require ".."
+  conn = null
+
+  beforeEach ->
+    if conn then pq.PQfinish conn
+    conn = pq.PQconnectdb "postgres://postgres@localhost"
 
   describe "PQconnectdb", ->
     it "should connect to a database without error", ->
-      conn = pq.PQconnectdb "postgres://postgres@localhost"
-    it "should return a PQconnection pointer", ->
-      conn = pq.PQconnectdb "postgres://postgres@localhost"
       status = pq.PQstatus conn
       status.should.equal pq.CONNECTION_OK
 
@@ -31,7 +34,6 @@ describe "pg-ffi", ->
 
   describe "PQexec", ->
     it "should execute a SQL statement", ->
-      conn = pq.PQconnectdb "postgres://postgres@localhost"
       result = pq.PQexec conn, "SELECT 'foo'"
       status = pq.PQresultStatus result
       status.should.equal pq.PGRES_TUPLES_OK
@@ -50,3 +52,12 @@ describe "pg-ffi", ->
     it "should return the value of a index i, j", ->
   describe "PQexecParams", ->
     it "should exec a SQL and pass parameters separately from SQL", ->
+      result = pq.PQexecParams conn,
+        "SELECT $1::text, $2::text, $3::text;",
+        3,
+        [],
+        ["foo", "bar", "baz"],
+        [],
+        [],
+        0
+      (pq.PQresultStatus result).should.equal pq.PGRES_TUPLES_OK
