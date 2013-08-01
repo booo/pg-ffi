@@ -50,6 +50,8 @@ describe "pg-ffi", ->
     it "should return the index of a column", ->
   describe "PQgetvalue", ->
     it "should return the value of a index i, j", ->
+      (pq.PQgetvalue (pq.PQexec conn, "SELECT 'foo';"), 0, 0).
+        should.equal "foo"
   describe "PQexecParams", ->
     it "should exec a SQL and pass parameters separately from SQL", ->
       result = pq.PQexecParams conn,
