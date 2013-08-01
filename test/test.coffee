@@ -34,6 +34,7 @@ describe "pg-ffi", ->
       conn = pq.PQconnectdb "postgres://postgres@localhost"
       result = pq.PQexec conn, "SELECT 'foo'"
       status = pq.PQresultStatus result
+      status.should.equal pq.PGRES_TUPLES_OK
       (pq.PQresStatus status).should.equal "PGRES_TUPLES_OK"
       (pq.PQgetvalue result, 0, 0).should.equal "foo"
 
