@@ -32,9 +32,10 @@ describe "pg-ffi", ->
   describe "PQexec", ->
     it "should execute a SQL statement", ->
       conn = pq.PQconnectdb "postgres://postgres@localhost"
-      result = pq.PQexec conn, "SELECT NOW() as then;"
+      result = pq.PQexec conn, "SELECT 'foo'"
       status = pq.PQresultStatus result
       (pq.PQresStatus status).should.equal "PGRES_TUPLES_OK"
+      (pq.PQgetvalue result, 0, 0).should.equal "foo"
 
   describe "PQntuples", ->
     it "should return the number of tuples", ->
