@@ -25,6 +25,10 @@ describe "pg-ffi", ->
         'missing "=" after "this" in connection info string\n'
       )
 
+  describe "PQlibVersion", ->
+    it "should return an integer as version", ->
+      pq.PQlibVersion().should.equal 90203
+
   describe "PQexec", ->
     it "should execute a SQL statement", ->
       conn = pq.PQconnectdb "postgres://postgres@localhost"
