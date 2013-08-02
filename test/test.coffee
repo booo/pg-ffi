@@ -23,6 +23,11 @@ describe "pg-ffi", ->
       pq.PQfinish conn
       conn = null
 
+  describe "PQreset", ->
+    it "should reset the connection", ->
+      pq.PQreset conn
+      (pq.PQstatus conn).should.equal pq.CONNECTION_OK
+
   describe "PQstatus", ->
     it "should return a status code when connection string is bad", ->
       conn = pq.PQconnectdb "this is foo bar"
