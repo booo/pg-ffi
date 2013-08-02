@@ -48,6 +48,11 @@ describe "pg-ffi", ->
     it "should return the name of a column", ->
   describe "PQfnumber", ->
     it "should return the index of a column", ->
+      (pq.PQfnumber (pq.PQexec conn, "SELECT 'foo' AS bar;"), "bar").
+        should.equal 0
+    it "should return -1 if column does not exist", ->
+      (pq.PQfnumber (pq.PQexec conn, "SELECT 'foo' AS bar"), "baz").
+        should.equal -1
   describe "PQgetvalue", ->
     it "should return the value of a index i, j", ->
       (pq.PQgetvalue (pq.PQexec conn, "SELECT 'foo';"), 0, 0).
