@@ -40,23 +40,29 @@ describe "pg-ffi", ->
       (pq.PQresStatus status).should.equal "PGRES_TUPLES_OK"
       (pq.PQgetvalue result, 0, 0).should.equal "foo"
 
-  describe "PQntuples", ->
-    it "should return the number of tuples", ->
-  describe "PQnfields", ->
-    it "should return the number of columns (fields)", ->
-  describe "PQfname", ->
-    it "should return the name of a column", ->
-  describe "PQfnumber", ->
-    it "should return the index of a column", ->
-      (pq.PQfnumber (pq.PQexec conn, "SELECT 'foo' AS bar;"), "bar").
-        should.equal 0
-    it "should return -1 if column does not exist", ->
-      (pq.PQfnumber (pq.PQexec conn, "SELECT 'foo' AS bar"), "baz").
-        should.equal -1
-  describe "PQgetvalue", ->
-    it "should return the value of a index i, j", ->
-      (pq.PQgetvalue (pq.PQexec conn, "SELECT 'foo';"), 0, 0).
-        should.equal "foo"
+  describe "functions working with PGresult", ->
+    result = null
+
+    before ->
+      result = pq.PQexec conn, "SELECT 'foo' AS foo, 'bar' AS bar"
+
+    describe "PQntuples", ->
+      it "should return the number of tuples", ->
+    describe "PQnfields", ->
+      it "should return the number of columns (fields)", ->
+        (pq.PQnfields result). should.equal 2
+    describe "PQfname", ->
+      it "should return the name of a column", ->
+        (pq.PQfname result, 0).should.equal "foo"
+    describe "PQfnumber", ->
+      it "should return the index of a column", ->
+        (pq.PQfnumber result, "bar").should.equal 1
+      it "should return -1 if column does not exist", ->
+        (pq.PQfnumber result, "baz").should.equal -1
+    describe "PQgetvalue", ->
+      it "should return the value of a index i, j", ->
+        (pq.PQgetvalue result, 0, 0).should.equal "foo"
+
   describe "PQexecParams", ->
     it "should exec a SQL and pass parameters separately from SQL", ->
       result = pq.PQexecParams conn,
