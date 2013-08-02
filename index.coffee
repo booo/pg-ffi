@@ -72,7 +72,8 @@ functions =
     "int" # int resultFormat
     ]
   ]
-  PQprepare: ["pointer", ["string", "string", "int", refArray("int")]]
+  PQprepare: ["pointer", ["pointer", "string", "string", "int",
+    refArray("int")]]
   PQexecPrepared: ["pointer", [
     "pointer", "string", "int",
     refArray("string"), refArray("int"), refArray("int"), "int"
