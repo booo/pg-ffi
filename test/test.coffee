@@ -7,7 +7,7 @@ describe "pg-ffi", ->
   result = null
 
   beforeEach ->
-    conn = pq.PQconnectdb "postgres://postgres@localhost"
+    conn = pq.PQconnectdb "postgres://postgres@localhost/testing"
   afterEach ->
     if conn then pq.PQfinish conn
     if result then pq.PQclear result
