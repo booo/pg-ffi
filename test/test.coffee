@@ -79,7 +79,25 @@ describe "pg-ffi", ->
     it "should prepare a statement for execution", ->
       result = pq.PQprepare conn,
         "prepared_test_statement",
-        "SELECT $1::text AS foo, $2::text AS bar",
+        "SELECT $1::text AS foo, $2::text AS bar;",
         2,
         null
       (pq.PQresultStatus result).should.equal pq.PGRES_COMMAND_OK
+
+  describe "PQexecPrepared", ->
+    it "should execute a prepared statement", ->
+      result = pq.PQprepare conn,
+        "prepared_test_statement",
+        "SELECT $1::text AS foo, $2::text AS bar;",
+        2,
+        null
+      (pq.PQresultStatus result).should.equal pq.PGRES_COMMAND_OK
+
+      result = pq.PQexecPrepared conn,
+        "prepared_test_statement",
+        2,
+        ["foo", "bar"],
+        [],
+        []
+        0
+      (pq.PQresultStatus result).should.equal pq.PGRES_TUPLES_OK
