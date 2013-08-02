@@ -18,6 +18,11 @@ describe "pg-ffi", ->
       status = pq.PQstatus conn
       status.should.equal pq.CONNECTION_OK
 
+  describe "PQfinish", ->
+    it "should close the connection and free the memory", ->
+      pq.PQfinish conn
+      conn = null
+
   describe "PQstatus", ->
     it "should return a status code when connection string is bad", ->
       conn = pq.PQconnectdb "this is foo bar"
