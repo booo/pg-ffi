@@ -4,10 +4,13 @@ describe "pg-ffi", ->
 
   pq = require ".."
   conn = null
+  result = null
 
   beforeEach ->
-    if conn then pq.PQfinish conn
     conn = pq.PQconnectdb "postgres://postgres@localhost"
+  afterEach ->
+    if conn then pq.PQfinish conn
+    if result then pq.PQclear result
 
   describe "PQconnectdb", ->
     it "should connect to a database without error", ->
@@ -41,9 +44,8 @@ describe "pg-ffi", ->
       (pq.PQgetvalue result, 0, 0).should.equal "foo"
 
   describe "functions working with PGresult", ->
-    result = null
 
-    before ->
+    beforeEach ->
       result = pq.PQexec conn, "SELECT 'foo' AS foo, 'bar' AS bar"
 
     describe "PQntuples", ->
