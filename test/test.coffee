@@ -15,6 +15,7 @@ describe "pg-ffi", ->
   describe "PQconnectdb", ->
     it "should connect to a database without error", ->
       status = pq.PQstatus conn
+      console.error pq.PQerrorMessage conn
       status.should.equal pq.CONNECTION_OK
 
   describe "PQstatus", ->
